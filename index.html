@@ -1,893 +1,995 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AgriChain | Blockchain Food Traceability</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AgriChain | Trace Your Food Journey</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --green:#2e7d32;
-  --green-dark:#1b5e20;
-  --light:#f4f7f5;
-  --gray:#666;
-  --border:12px;
-  --shadow:0 6px 18px rgba(0,0,0,.08);
+:root {
+  --primary: #2d5016;
+  --primary-light: #4a7c2c;
+  --primary-dark: #1a3009;
+  --accent: #f4a261;
+  --accent-dark: #e76f51;
+  --bg-light: #faf8f3;
+  --bg-cream: #f5f1e8;
+  --text-dark: #1a1a1a;
+  --text-muted: #666;
+  --white: #ffffff;
+  --success: #8bc34a;
+  --shadow: rgba(45, 80, 22, 0.08);
+  --shadow-lg: rgba(45, 80, 22, 0.15);
 }
 
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-html{
-  scroll-behavior: smooth;
-}
-
-body{
-  font-family:'Poppins', system-ui, -apple-system, sans-serif;
-  background:#fff;
-  color:#222;
-  line-height:1.6;
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg-light);
+  color: var(--text-dark);
+  line-height: 1.6;
   overflow-x: hidden;
 }
 
-.container{
-  max-width:1150px;
-  margin:0 auto;
-  padding:0 20px;
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(244, 162, 97, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(45, 80, 22, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* ---------- NAV ---------- */
-nav{
-  position:fixed;
-  top:0;
-  width:100%;
-  background:#fff;
-  box-shadow:0 2px 10px rgba(0,0,0,.05);
-  z-index:100;
-  border-bottom:1px solid rgba(0,0,0,0.05);
+.grain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='2.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
 }
 
-.nav{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:14px 0;
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 24px;
+  position: relative;
+  z-index: 2;
 }
 
-.logo{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-weight:600;
-  color:var(--green);
-  text-decoration:none;
-  font-size:20px;
+/* Hero Header */
+.hero {
+  text-align: center;
+  margin-bottom: 80px;
+  animation: fadeInUp 0.8s ease-out;
 }
 
-.logo i{
-  font-size:22px;
+.hero-badge {
+  display: inline-block;
+  padding: 8px 20px;
+  background: linear-gradient(135deg, var(--primary-light), var(--primary));
+  color: var(--white);
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(45, 80, 22, 0.2);
 }
 
-nav ul{
-  display:flex;
-  gap:24px;
-  list-style:none;
-  margin:0;
+h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 400;
+  color: var(--primary-dark);
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
 }
 
-nav ul a{
-  text-decoration:none;
-  color:#222;
-  font-weight:500;
-  font-size:15px;
-  transition: color 0.3s ease;
+.subtitle {
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  color: var(--text-muted);
+  font-weight: 300;
+  max-width: 600px;
+  margin: 0 auto 40px;
 }
 
-nav ul a:hover{
-  color:var(--green);
+/* Language Switcher */
+.lang-switcher {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+  animation: fadeIn 1s ease-out 0.2s both;
 }
 
-.btn{
-  padding:10px 18px;
-  border-radius:var(--border);
-  border:2px solid var(--green);
-  background:none;
-  color:var(--green);
-  font-weight:500;
-  cursor:pointer;
-  font-size:14px;
+.lang-btn {
+  padding: 10px 20px;
+  background: var(--white);
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  border-radius: 50px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: 'Outfit', sans-serif;
+}
+
+.lang-btn:hover {
+  background: var(--bg-cream);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.lang-btn.active {
+  background: linear-gradient(135deg, var(--primary-light), var(--primary));
+  color: var(--white);
+  border-color: var(--primary);
+  box-shadow: 0 4px 16px var(--shadow-lg);
+}
+
+/* Cards */
+.card {
+  background: var(--white);
+  padding: 36px;
+  border-radius: 24px;
+  margin-bottom: 32px;
+  box-shadow: 0 8px 32px var(--shadow);
+  border: 1px solid rgba(45, 80, 22, 0.06);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInUp 0.6s ease-out backwards;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px var(--shadow-lg);
+}
+
+.card:hover::before {
+  transform: scaleX(1);
+}
+
+.card:nth-child(2) { animation-delay: 0.1s; }
+.card:nth-child(3) { animation-delay: 0.2s; }
+.card:nth-child(4) { animation-delay: 0.3s; }
+.card:nth-child(5) { animation-delay: 0.4s; }
+.card:nth-child(6) { animation-delay: 0.5s; }
+
+.card h2, .card h3 {
+  font-family: 'DM Serif Display', serif;
+  color: var(--primary-dark);
+  margin-bottom: 24px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.card h2 {
+  font-size: 2rem;
+}
+
+.card h3 {
+  font-size: 1.6rem;
+}
+
+/* Icons */
+.icon {
+  font-size: 1.4em;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+/* Buttons */
+button {
+  padding: 14px 32px;
+  background: linear-gradient(135deg, var(--primary-light), var(--primary));
+  color: var(--white);
+  border: none;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 16px rgba(45, 80, 22, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s, height 0.4s;
+}
+
+button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(45, 80, 22, 0.3);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+button.secondary {
+  background: var(--bg-cream);
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  box-shadow: 0 4px 12px rgba(45, 80, 22, 0.1);
+}
+
+button.secondary:hover {
+  background: var(--white);
+}
+
+/* Inputs */
+input, select, textarea {
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 16px;
+  border: 2px solid rgba(45, 80, 22, 0.1);
+  margin: 8px 0 20px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  background: var(--bg-light);
+  color: var(--text-dark);
   transition: all 0.3s ease;
 }
 
-.btn:hover{
-  background:var(--green);
-  color:#fff;
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: var(--white);
+  box-shadow: 0 0 0 4px rgba(45, 80, 22, 0.08);
 }
 
-.btn.primary{
-  background:var(--green);
-  color:#fff;
+textarea {
+  resize: vertical;
+  min-height: 100px;
 }
 
-.btn.primary:hover{
-  background:var(--green-dark);
+select {
+  cursor: pointer;
 }
 
-/* ---------- SECTIONS ---------- */
-section{
-  padding:90px 0;
+/* Timeline */
+.timeline {
   position: relative;
+  padding-left: 40px;
+  border-left: 3px solid var(--primary);
 }
 
-.hero{
-  padding-top:140px;
-  padding-bottom:80px;
-  background:var(--light);
-  min-height: 90vh;
-  display: flex;
-  align-items: center;
+.timeline::before {
+  content: '🌱';
+  position: absolute;
+  left: -15px;
+  top: -10px;
+  font-size: 24px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 
-.hero h1{
-  font-size:42px;
-  margin-bottom:20px;
-  font-weight:700;
-  line-height: 1.2;
-  color:#1a1a1a;
+.event {
+  position: relative;
+  margin-bottom: 32px;
+  padding: 24px;
+  background: var(--bg-cream);
+  border-radius: 16px;
+  border-left: 4px solid var(--accent);
+  animation: slideInLeft 0.5s ease-out backwards;
 }
 
-.hero p{
-  color:var(--gray);
-  max-width:600px;
-  font-size:16px;
-  line-height: 1.7;
-  margin-bottom:30px;
+.event:nth-child(1) { animation-delay: 0.1s; }
+.event:nth-child(2) { animation-delay: 0.2s; }
+.event:nth-child(3) { animation-delay: 0.3s; }
+.event:nth-child(4) { animation-delay: 0.4s; }
+.event:nth-child(5) { animation-delay: 0.5s; }
+
+.event::before {
+  content: '';
+  position: absolute;
+  left: -46px;
+  top: 24px;
+  width: 16px;
+  height: 16px;
+  background: var(--white);
+  border: 3px solid var(--primary);
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(45, 80, 22, 0.2);
 }
 
-.badge{
-  display:inline-block;
-  margin-bottom:20px;
-  padding:8px 16px;
-  background:#e8f5e9;
-  color:var(--green);
-  border-radius:20px;
-  font-size:13px;
-  font-weight:600;
+.event h4 {
+  color: var(--primary-dark);
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 1.1rem;
 }
 
-/* ---------- FLOW ---------- */
-.flow{
-  display:flex;
-  justify-content:space-between;
-  margin-top:50px;
-  gap:15px;
-  flex-wrap: wrap;
+.event p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 12px;
 }
 
-.node{
-  flex:1;
-  min-width: 150px;
-  text-align:center;
-  background:#fff;
-  padding:24px 16px;
-  border-radius:var(--border);
-  box-shadow:var(--shadow);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.event input {
+  margin-top: 12px;
 }
 
-.node:hover{
-  transform: translateY(-5px);
-  box-shadow:0 8px 24px rgba(0,0,0,.12);
+.event button {
+  margin-top: 8px;
+  padding: 10px 24px;
+  font-size: 14px;
 }
 
-.node i{
-  font-size:32px;
-  color:var(--green);
-  margin-bottom:12px;
-  display: block;
+/* Badge */
+.badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 600;
+  margin: 4px 4px 4px 0;
+  letter-spacing: 0.3px;
 }
 
-.node p{
-  font-weight:600;
-  font-size:14px;
-  color:#333;
-  margin:0;
+.badge:nth-of-type(1) {
+  background: linear-gradient(135deg, #8bc34a, #689f38);
+  color: var(--white);
+  box-shadow: 0 2px 8px rgba(139, 195, 74, 0.3);
 }
 
-/* ---------- FEATURES ---------- */
-.features{
-  background:#fff;
+.badge:nth-of-type(2) {
+  background: var(--bg-cream);
+  color: var(--primary);
+  border: 1px solid var(--primary);
 }
 
-.features h2{
-  text-align: center;
-  font-size:36px;
-  margin-bottom:50px;
-  font-weight:700;
-  color:#1a1a1a;
+/* Inspector List */
+#inspectList .event {
+  background: linear-gradient(135deg, #fff9f0, #ffffff);
+  border-left-color: var(--accent-dark);
 }
 
-.cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
-  gap:30px;
-}
-
-.card{
-  background:var(--light);
-  padding:32px 24px;
-  border-radius:var(--border);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 2px solid transparent;
-}
-
-.card:hover{
-  transform: translateY(-5px);
-  box-shadow:var(--shadow);
-  border-color: rgba(46, 125, 50, 0.2);
-}
-
-.card i{
-  font-size:36px;
-  color:var(--green);
-  margin-bottom:16px;
-  display: block;
-}
-
-.card h3{
-  font-size:20px;
-  margin-bottom:12px;
-  font-weight:600;
-  color:#1a1a1a;
-}
-
-.card p{
-  font-size:15px;
-  line-height: 1.6;
-  color:var(--gray);
-  margin:0;
-}
-
-/* ---------- TRACE ---------- */
-.trace{
-  background:var(--light);
-}
-
-.trace h2{
-  text-align: center;
-  font-size:36px;
-  margin-bottom:50px;
-  font-weight:700;
-  color:#1a1a1a;
-}
-
-.trace-grid{
-  display:grid;
-  grid-template-columns:1fr 2fr;
-  gap:30px;
-  align-items: start;
-}
-
-.box{
-  background:#fff;
-  padding:32px;
-  border-radius:var(--border);
-  box-shadow:var(--shadow);
-}
-
-.box h3{
-  font-size:22px;
-  margin-bottom:16px;
-  font-weight:600;
-  color:#1a1a1a;
-}
-
-/* FORM */
-.form-group{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  margin-bottom:20px;
-}
-
-.form-group label{
-  font-weight:600;
-  font-size:14px;
-  color:#333;
-}
-
-.form-group select,
-.form-group input{
-  padding:12px 16px;
-  border-radius:var(--border);
-  border:1px solid #ccc;
-  font-size:15px;
-  font-family: 'Poppins', sans-serif;
-  transition: border-color 0.3s ease;
-  background:#fff;
-}
-
-.form-group select:focus,
-.form-group input:focus{
-  outline:none;
-  border-color:var(--green);
-}
-
-.form-hint{
-  font-size:13px;
-  color:#888;
+/* Empty State */
+.timeline p[style*="color:#777"] {
+  color: var(--text-muted) !important;
   font-style: italic;
-  margin:0;
-}
-
-.trace-btn{
-  width:100%;
-  margin-top:10px;
-  padding:14px;
-  font-size:15px;
-}
-
-/* TIMELINE */
-.timeline-note{
-  font-size:14px;
-  color:#666;
-  margin-bottom:24px;
-  padding:12px;
-  background:rgba(46, 125, 50, 0.05);
-  border-radius:8px;
-  border-left:3px solid var(--green);
-}
-
-.timeline{
-  position:relative;
-  padding-left:35px;
-  min-height: 200px;
-}
-
-.timeline-placeholder{
-  text-align:center;
-  color:#999;
-  padding:40px 0;
-  font-size:14px;
-}
-
-.timeline::before{
-  content:"";
-  position:absolute;
-  left:12px;
-  top:0;
-  bottom:0;
-  width:3px;
-  background:#ddd;
-}
-
-.step{
-  margin-bottom:28px;
-  position:relative;
-}
-
-.step::before{
-  content:"";
-  position:absolute;
-  left:-23px;
-  top:5px;
-  width:16px;
-  height:16px;
-  background:#ddd;
-  border-radius:50%;
-  border:3px solid #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.step.active::before{
-  background:var(--green);
-}
-
-.step h4{
-  margin-bottom:6px;
-  font-size:16px;
-  font-weight:600;
-  color:#1a1a1a;
-}
-
-.step p{
-  margin-bottom:6px;
-  font-size:14px;
-  color:var(--gray);
-}
-
-.step small{
-  font-size:13px;
-  color:var(--green);
-  font-weight:600;
-}
-
-/* ---------- ABOUT ---------- */
-.about{
-  background:#fff;
-}
-
-.about h2{
-  font-size:36px;
-  margin-bottom:20px;
-  font-weight:700;
-  color:#1a1a1a;
-}
-
-.about > .container > p{
-  font-size:16px;
-  color:var(--gray);
-  line-height: 1.7;
-  margin-bottom:30px;
-  max-width: 800px;
-}
-
-.about ul{
-  margin-top:20px;
-  list-style:none;
-  padding:0;
-}
-
-.about li{
-  margin-bottom:16px;
-  display:flex;
-  align-items: center;
-  gap:12px;
-  font-size:15px;
-}
-
-.about li i{
-  font-size:20px;
-  color:var(--green);
-  min-width: 20px;
-}
-
-/* ---------- FOOTER ---------- */
-footer{
-  background:var(--green-dark);
-  color:#fff;
-  padding:40px 0 20px;
-}
-
-footer p{
-  font-size:14px;
-  color:#ddd;
   text-align: center;
-  margin:0;
+  padding: 40px 20px;
 }
 
-/* ---------- RESPONSIVE ---------- */
-@media(max-width:900px){
-  .trace-grid{
-    grid-template-columns:1fr;
+/* Hidden */
+.hidden {
+  display: none;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-top: 80px;
+  padding: 40px 0;
+  border-top: 1px solid rgba(45, 80, 22, 0.1);
+  animation: fadeIn 1s ease-out 0.6s both;
+}
+
+footer::before {
+  content: '🌾';
+  display: block;
+  font-size: 32px;
+  margin-bottom: 16px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
-  
-  .flow{
-    flex-direction:column;
-  }
-  
-  .hero h1{
-    font-size:32px;
-  }
-  
-  nav ul{
-    display:none;
-  }
-  
-  .features h2,
-  .trace h2,
-  .about h2{
-    font-size:28px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@media(max-width:600px){
-  .hero{
-    padding-top:120px;
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
   }
-  
-  .hero h1{
-    font-size:28px;
-  }
-  
-  .hero p{
-    font-size:15px;
-  }
-  
-  .cards{
-    grid-template-columns:1fr;
-  }
-  
-  .node{
-    min-width: 100%;
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 40px 20px;
+  }
+  
+  .card {
+    padding: 24px;
+    border-radius: 20px;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+  }
+  
+  .timeline {
+    padding-left: 32px;
+  }
+  
+  .lang-switcher {
+    gap: 6px;
+  }
+  
+  .lang-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+}
+
+/* Special role-based icons */
+.role-icon-farmer::before { content: '👨‍🌾 '; }
+.role-icon-logistics::before { content: '🚚 '; }
+.role-icon-retailer::before { content: '🏪 '; }
+.role-icon-inspector::before { content: '🔍 '; }
 </style>
 </head>
 
 <body>
+<div class="grain-overlay"></div>
 
-<nav>
-  <div class="container nav">
-    <a class="logo" href="#" aria-label="AgriChain Home" title="AgriChain Home">
-      <i class="fas fa-seedling" aria-hidden="true"></i>
-      AgriChain
-    </a>
-    <ul role="navigation">
-      <li><a href="#features" title="View Features">Features</a></li>
-      <li><a href="#trace" title="Trace Products">Trace</a></li>
-      <li><a href="#about" title="About AgriChain">About</a></li>
-    </ul>
-    <button class="btn" id="walletBtn" aria-label="Verify on Blockchain" title="Verify on Blockchain">
-      <i class="fas fa-shield-alt" aria-hidden="true"></i> Verify
-    </button>
+<div class="container">
+
+<!-- Hero Section -->
+<div class="hero">
+  <div class="hero-badge">Farm to Fork Transparency</div>
+  <h1 data-i18n="title">AgriChain</h1>
+  <p class="subtitle" data-i18n="subtitle">Trace your food from farm to fork.</p>
+  
+  <div class="lang-switcher">
+    <button class="lang-btn active" id="langEn">🇬🇧 English</button>
+    <button class="lang-btn" id="langHi">🇮🇳 हिन्दी</button>
+    <button class="lang-btn" id="langBn">🇧🇩 বাংলা</button>
+    <button class="lang-btn" id="langTa">தமிழ்</button>
+    <button class="lang-btn" id="langTe">తెలుగు</button>
   </div>
-</nav>
+</div>
 
-<section class="hero">
-  <div class="container">
-    <span class="badge">Hackathon Prototype · Pilot Demo</span>
-    <h1>Transparent Food Supply Chains</h1>
-    <p>
-      Verify food origin, certifications, and supply-chain steps using
-      tamper-proof blockchain records — without requiring consumers to
-      understand crypto.
-    </p>
+<!-- PUBLIC TRACE -->
+<div class="card">
+  <h2><span class="icon">🔍</span> <span data-i18n="trace_product">Trace Product</span></h2>
+  <input id="tracePid" placeholder="Enter Product ID" data-i18n-placeholder="ph_product_id"/>
+  <button onclick="traceProduct()" data-i18n="trace_btn">Trace</button>
+</div>
 
-    <div class="flow">
-      <div class="node">
-        <i class="fas fa-tractor" aria-hidden="true"></i>
-        <p>Farm</p>
-      </div>
-      <div class="node">
-        <i class="fas fa-industry" aria-hidden="true"></i>
-        <p>Processing</p>
-      </div>
-      <div class="node">
-        <i class="fas fa-truck" aria-hidden="true"></i>
-        <p>Logistics</p>
-      </div>
-      <div class="node">
-        <i class="fas fa-store" aria-hidden="true"></i>
-        <p>Retail</p>
-      </div>
-      <div class="node">
-        <i class="fas fa-user" aria-hidden="true"></i>
-        <p>Consumer</p>
-      </div>
-    </div>
+<div class="card">
+  <h3><span class="icon">📍</span> <span data-i18n="timeline_title">Product Timeline</span></h3>
+  <div id="timeline" class="timeline">
+    <p style="color:#777" data-i18n="timeline_empty">Enter a product ID to view its journey.</p>
   </div>
-</section>
+</div>
 
-<section class="features" id="features">
-  <div class="container">
-    <h2>Core Features</h2>
-    <div class="cards">
-      <div class="card">
-        <i class="fas fa-search" aria-hidden="true"></i>
-        <h3>End-to-End Traceability</h3>
-        <p>Every supply-chain step is recorded as an immutable blockchain event.</p>
-      </div>
-      <div class="card">
-        <i class="fas fa-hand-holding-usd" aria-hidden="true"></i>
-        <h3>Farmer Visibility</h3>
-        <p>Producers gain proof of origin and certification without middlemen.</p>
-      </div>
-      <div class="card">
-        <i class="fas fa-shield-check" aria-hidden="true"></i>
-        <h3>Fraud Resistance</h3>
-        <p>No edits, no deletions — only verified updates from trusted roles.</p>
-      </div>
-      <div class="card">
-        <i class="fas fa-qrcode" aria-hidden="true"></i>
-        <h3>Consumer Friendly</h3>
-        <p>Scan a QR or enter an ID. No wallet required.</p>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- DASHBOARD -->
+<div class="card">
+  <h3><span class="icon">🤝</span> <span data-i18n="partner_title">Supply Chain Partner?</span></h3>
+  <button class="secondary" onclick="openDashboard()" data-i18n="access_dashboard">Access Dashboard</button>
+</div>
 
-<section class="trace" id="trace">
-  <div class="container">
-    <h2>Product Traceability</h2>
-    <div class="trace-grid">
+<!-- ROLE -->
+<div class="card hidden" id="roleCard">
+  <h3><span class="icon">👤</span> <span data-i18n="select_role">Select your role</span></h3>
+  <select id="roleSelect" onchange="renderRoleUI()">
+    <option value="" data-i18n="choose_role">Choose role</option>
+    <option value="farmer" data-i18n="role_farmer">Farmer</option>
+    <option value="logistics" data-i18n="role_logistics">Logistics</option>
+    <option value="retailer" data-i18n="role_retailer">Retailer</option>
+    <option value="inspector" data-i18n="role_inspector">Inspector</option>
+  </select>
+</div>
 
-      <div class="box">
-        <div class="form-group">
-          <label for="role">I am a</label>
-          <select id="role" name="role" required aria-required="true">
-            <option value="consumer">Consumer</option>
-            <option value="farmer">Farmer</option>
-            <option value="inspector">Inspector</option>
-          </select>
-        </div>
+<!-- FARMER -->
+<div class="card hidden" id="farmerUI">
+  <h3><span class="icon">🌱</span> <span data-i18n="add_product">Add New Product</span></h3>
+  <input id="newPid" placeholder="Product ID" data-i18n-placeholder="ph_product_id"/>
+  <input id="productName" placeholder="Product name" data-i18n-placeholder="ph_product_name"/>
+  <button onclick="addProduct()" data-i18n="add_product_btn">Add Product</button>
+</div>
 
-        <div class="form-group">
-          <label for="pid">Product ID</label>
-          <input id="pid" type="text" placeholder="AGRI-2026-TN-01" aria-describedby="pid-help">
-          <p id="pid-help" class="form-hint">
-            Try: AGRI-2026-TN-01 or AGRI-2026-KA-02
-          </p>
-        </div>
+<!-- UPDATE -->
+<div class="card hidden" id="updateUI">
+  <h3><span class="icon">📦</span> <span data-i18n="update_status">Update Product Status</span></h3>
+  <input id="updPid" placeholder="Product ID" data-i18n-placeholder="ph_product_id"/>
+  <input id="stage" placeholder="Stage" data-i18n-placeholder="ph_stage"/>
+  <input id="location" placeholder="Location" data-i18n-placeholder="ph_location"/>
+  <input id="docUrl" placeholder="Document URL" data-i18n-placeholder="ph_document_url"/>
+  <textarea id="roleNote" placeholder="Optional note" data-i18n-placeholder="ph_optional_note"></textarea>
+  <button onclick="addUpdate()" data-i18n="submit_update">Submit Update</button>
+</div>
 
-        <button class="btn primary trace-btn" id="traceBtn">
-          <i class="fas fa-search" aria-hidden="true"></i> Trace Product
-        </button>
-      </div>
-
-      <div class="box">
-        <h3>On-Chain Event History</h3>
-        <p class="timeline-note">
-          <i class="fas fa-lock" aria-hidden="true"></i> No edits. No deletions. Every step is permanently recorded.
-        </p>
-        <div class="timeline" id="timeline">
-          <p class="timeline-placeholder">
-            Enter a product ID and click "Trace Product" to view its journey.
-          </p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<section class="about" id="about">
-  <div class="container">
-    <h2>Why AgriChain</h2>
-    <p>
-      AgriChain demonstrates how blockchain can restore trust in food systems
-      by making supply-chain data verifiable, auditable, and role-controlled.
-    </p>
-    <ul>
-      <li>
-        <i class="fas fa-check-circle" aria-hidden="true"></i>
-        <span>Role-based access control</span>
-      </li>
-      <li>
-        <i class="fas fa-check-circle" aria-hidden="true"></i>
-        <span>Immutable event logs</span>
-      </li>
-      <li>
-        <i class="fas fa-check-circle" aria-hidden="true"></i>
-        <span>Low-cost public blockchain ready</span>
-      </li>
-      <li>
-        <i class="fas fa-check-circle" aria-hidden="true"></i>
-        <span>Designed for real-world pilots</span>
-      </li>
-    </ul>
-  </div>
-</section>
+<!-- INSPECTOR -->
+<div class="card hidden" id="inspectorUI">
+  <h3><span class="icon">✅</span> <span data-i18n="inspector_review">Inspector Review</span></h3>
+  <div id="inspectList"></div>
+</div>
 
 <footer>
-  <div class="container">
-    <p>AgriChain · Hackathon Prototype · 2026</p>
-  </div>
+  <span data-i18n="footer_text">AgriChain · Hackathon Prototype · Public Read · Role-Based Write</span>
 </footer>
 
-<script>
-// Mock Blockchain Data - Simulates real blockchain storage
-const blockchainData = {
-  'AGRI-2026-TN-01': [
-    {
-      type: 'Farm Origin',
-      description: 'Organic tomatoes harvested from certified farm in Tamil Nadu',
-      timestamp: '2026-02-01T08:30:00Z',
-      blockNumber: 15234567,
-      txHash: '0x8f4e...a2c1'
-    },
-    {
-      type: 'Quality Inspection',
-      description: 'Passed organic certification standards - Grade A',
-      timestamp: '2026-02-01T14:20:00Z',
-      blockNumber: 15234589,
-      txHash: '0x9a1f...b3d2'
-    },
-    {
-      type: 'Processing',
-      description: 'Batch processed and packaged at certified facility',
-      timestamp: '2026-02-02T10:15:00Z',
-      blockNumber: 15235012,
-      txHash: '0x7c2e...d4e3'
-    },
-    {
-      type: 'Cold Chain Transit',
-      description: 'Temperature maintained at 4°C throughout transport',
-      timestamp: '2026-02-03T09:00:00Z',
-      blockNumber: 15236234,
-      txHash: '0x6b3d...e5f4'
-    },
-    {
-      type: 'Warehouse Storage',
-      description: 'Stored in temperature-controlled facility',
-      timestamp: '2026-02-04T11:30:00Z',
-      blockNumber: 15237456,
-      txHash: '0x5a4c...f6g5'
-    },
-    {
-      type: 'Retail Distribution',
-      description: 'Delivered to retail location - Ready for sale',
-      timestamp: '2026-02-05T07:45:00Z',
-      blockNumber: 15238678,
-      txHash: '0x4d5b...g7h6'
-    }
-  ],
-  'AGRI-2026-KA-02': [
-    {
-      type: 'Farm Origin',
-      description: 'Premium Arabica coffee beans harvested in Karnataka',
-      timestamp: '2026-01-28T06:00:00Z',
-      blockNumber: 15230123,
-      txHash: '0x3e6a...h8i7'
-    },
-    {
-      type: 'Quality Grading',
-      description: 'Graded as AAA Premium by certified inspector',
-      timestamp: '2026-01-28T16:30:00Z',
-      blockNumber: 15230456,
-      txHash: '0x2f7b...i9j8'
-    },
-    {
-      type: 'Roasting',
-      description: 'Medium roast completed at licensed roastery',
-      timestamp: '2026-01-30T12:00:00Z',
-      blockNumber: 15232789,
-      txHash: '0x1g8c...j0k9'
-    },
-    {
-      type: 'Packaging',
-      description: 'Vacuum sealed in eco-friendly biodegradable bags',
-      timestamp: '2026-01-31T14:20:00Z',
-      blockNumber: 15234012,
-      txHash: '0x0h9d...k1l0'
-    },
-    {
-      type: 'Export Clearance',
-      description: 'Cleared customs with all certifications',
-      timestamp: '2026-02-02T10:00:00Z',
-      blockNumber: 15235234,
-      txHash: '0x9i0e...l2m1'
-    }
-  ],
-  'AGRI-2026-MH-03': [
-    {
-      type: 'Farm Origin',
-      description: 'Organic rice cultivated in Maharashtra using traditional methods',
-      timestamp: '2026-01-20T07:00:00Z',
-      blockNumber: 15220123,
-      txHash: '0x8j1f...m3n2'
-    },
-    {
-      type: 'Harvest',
-      description: 'Harvested at optimal moisture content - 14%',
-      timestamp: '2026-01-25T11:30:00Z',
-      blockNumber: 15228456,
-      txHash: '0x7k2g...n4o3'
-    },
-    {
-      type: 'Milling',
-      description: 'Processed at modern rice mill - 70% yield',
-      timestamp: '2026-01-27T09:15:00Z',
-      blockNumber: 15231789,
-      txHash: '0x6l3h...o5p4'
-    },
-    {
-      type: 'Quality Testing',
-      description: 'Lab tested - Zero pesticide residue detected',
-      timestamp: '2026-01-28T15:45:00Z',
-      blockNumber: 15233012,
-      txHash: '0x5m4i...p6q5'
-    }
-  ]
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, doc, setDoc, getDoc, collection, addDoc, query, orderBy, getDocs, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+/* 🌍 TRANSLATIONS */
+let currentLang = "en";
+
+const translations = {
+  en: {
+    title: "AgriChain",
+    subtitle: "Trace your food from farm to fork.",
+    trace_product: "Trace Product",
+    trace_btn: "Trace",
+    timeline_title: "Product Timeline",
+    timeline_empty: "Enter a product ID to view its journey.",
+    partner_title: "Supply Chain Partner?",
+    access_dashboard: "Access Dashboard",
+    select_role: "Select your role",
+    choose_role: "Choose role",
+    role_farmer: "Farmer",
+    role_logistics: "Logistics",
+    role_retailer: "Retailer",
+    role_inspector: "Inspector",
+    add_product: "Add New Product",
+    add_product_btn: "Add Product",
+    update_status: "Update Product Status",
+    submit_update: "Submit Update",
+    inspector_review: "Inspector Review",
+    verify_btn: "Verify",
+    footer_text: "AgriChain · Hackathon Prototype · Public Read · Role-Based Write",
+
+    ph_product_id: "Enter Product ID",
+    ph_product_name: "Product name",
+    ph_stage: "Stage",
+    ph_location: "Location",
+    ph_document_url: "Document URL",
+    ph_optional_note: "Optional note",
+    ph_inspector_note: "Inspector note",
+
+    alert_missing_fields: "Missing fields",
+    alert_product_added: "Product added",
+    alert_update_submitted: "Update submitted",
+    alert_invalid_inspector: "Invalid inspector code",
+    alert_product_not_found: "Product not found",
+    prompt_inspector_code: "Enter Global Inspector Code:",
+    prompt_product_id: "Enter Product ID:",
+    
+    open_document: "Open document",
+    verified_badge: "Verified",
+    reviewed: "Reviewed"
+  },
+
+  hi: {
+    title: "एग्रीचेन",
+    subtitle: "अपने भोजन को खेत से थाली तक ट्रैक करें।",
+    trace_product: "उत्पाद ट्रैक करें",
+    trace_btn: "ट्रैक करें",
+    timeline_title: "उत्पाद समयरेखा",
+    timeline_empty: "उत्पाद आईडी दर्ज करें।",
+    partner_title: "आपूर्ति श्रृंखला भागीदार?",
+    access_dashboard: "डैशबोर्ड खोलें",
+    select_role: "भूमिका चुनें",
+    choose_role: "भूमिका चुनें",
+    role_farmer: "किसान",
+    role_logistics: "लॉजिस्टिक्स",
+    role_retailer: "खुदरा विक्रेता",
+    role_inspector: "निरीक्षक",
+    add_product: "नया उत्पाद जोड़ें",
+    add_product_btn: "उत्पाद जोड़ें",
+    update_status: "उत्पाद स्थिति अपडेट करें",
+    submit_update: "अपडेट भेजें",
+    inspector_review: "निरीक्षक समीक्षा",
+    verify_btn: "सत्यापित करें",
+    footer_text: "एग्रीचेन · हैकाथॉन प्रोटोटाइप",
+
+    ph_product_id: "उत्पाद आईडी दर्ज करें",
+    ph_product_name: "उत्पाद का नाम",
+    ph_stage: "चरण",
+    ph_location: "स्थान",
+    ph_document_url: "दस्तावेज़ लिंक",
+    ph_optional_note: "वैकल्पिक नोट",
+    ph_inspector_note: "निरीक्षक टिप्पणी",
+
+    alert_missing_fields: "जानकारी अधूरी है",
+    alert_product_added: "उत्पाद जोड़ा गया",
+    alert_update_submitted: "अपडेट भेजा गया",
+    alert_invalid_inspector: "अमान्य निरीक्षक कोड",
+    alert_product_not_found: "उत्पाद नहीं मिला",
+    prompt_inspector_code: "निरीक्षक कोड दर्ज करें:",
+    prompt_product_id: "उत्पाद आईडी दर्ज करें:",
+    
+    open_document: "दस्तावेज़ खोलें",
+    verified_badge: "सत्यापित",
+    reviewed: "समीक्षित"
+  },
+
+  bn: {
+    title: "এগ্রিচেইন",
+    subtitle: "খামার থেকে খাবার পর্যন্ত আপনার খাদ্য ট্র্যাক করুন।",
+    trace_product: "পণ্য ট্র্যাক করুন",
+    trace_btn: "ট্র্যাক করুন",
+    timeline_title: "পণ্য টাইমলাইন",
+    timeline_empty: "পণ্য আইডি লিখুন।",
+    partner_title: "সরবরাহ শৃঙ্খল অংশীদার?",
+    access_dashboard: "ড্যাশবোর্ড খুলুন",
+    select_role: "ভূমিকা নির্বাচন করুন",
+    choose_role: "ভূমিকা নির্বাচন করুন",
+    role_farmer: "কৃষক",
+    role_logistics: "লজিস্টিক্স",
+    role_retailer: "খুচরা বিক্রেতা",
+    role_inspector: "পরিদর্শক",
+    add_product: "নতুন পণ্য যোগ করুন",
+    add_product_btn: "পণ্য যোগ করুন",
+    update_status: "পণ্যের অবস্থা আপডেট করুন",
+    submit_update: "আপডেট জমা দিন",
+    inspector_review: "পরিদর্শক পর্যালোচনা",
+    verify_btn: "যাচাই করুন",
+    footer_text: "এগ্রিচেইন · হ্যাকাথন প্রোটোটাইপ",
+
+    ph_product_id: "পণ্য আইডি লিখুন",
+    ph_product_name: "পণ্যের নাম",
+    ph_stage: "পর্যায়",
+    ph_location: "অবস্থান",
+    ph_document_url: "নথি লিংক",
+    ph_optional_note: "ঐচ্ছিক নোট",
+    ph_inspector_note: "পরিদর্শক মন্তব্য",
+
+    alert_missing_fields: "তথ্য অসম্পূর্ণ",
+    alert_product_added: "পণ্য যুক্ত হয়েছে",
+    alert_update_submitted: "আপডেট জমা দেওয়া হয়েছে",
+    alert_invalid_inspector: "অবৈধ পরিদর্শক কোড",
+    alert_product_not_found: "পণ্য পাওয়া যায়নি",
+    prompt_inspector_code: "পরিদর্শক কোড লিখুন:",
+    prompt_product_id: "পণ্য আইডি লিখুন:",
+    
+    open_document: "নথি খুলুন",
+    verified_badge: "যাচাইকৃত",
+    reviewed: "পর্যালোচিত"
+  },
+
+  ta: {
+    title: "அக்ரிசெயின்",
+    subtitle: "உங்கள் உணவை பண்ணையிலிருந்து முட்கரண்டி வரை கண்காணிக்கவும்.",
+    trace_product: "தயாரிப்பு கண்காணிப்பு",
+    trace_btn: "கண்காணிக்கவும்",
+    timeline_title: "தயாரிப்பு காலவரிசை",
+    timeline_empty: "தயாரிப்பு ஐடியை உள்ளிடவும்.",
+    partner_title: "விநியோக சங்கிலி பங்குதாரர்?",
+    access_dashboard: "டாஷ்போர்டை திறக்கவும்",
+    select_role: "பங்கு தேர்ந்தெடுக்கவும்",
+    choose_role: "பங்கு தேர்ந்தெடுக்கவும்",
+    role_farmer: "விவசாயி",
+    role_logistics: "தளவாடங்கள்",
+    role_retailer: "சில்லறை விற்பனையாளர்",
+    role_inspector: "ஆய்வாளர்",
+    add_product: "புதிய தயாரிப்பு சேர்க்கவும்",
+    add_product_btn: "தயாரிப்பு சேர்க்கவும்",
+    update_status: "தயாரிப்பு நிலையை புதுப்பிக்கவும்",
+    submit_update: "புதுப்பிப்பை சமர்ப்பிக்கவும்",
+    inspector_review: "ஆய்வாளர் மதிப்பாய்வு",
+    verify_btn: "சரிபார்க்கவும்",
+    footer_text: "அக்ரிசெயின் · ஹேக்கத்தான் முன்மாதிரி",
+
+    ph_product_id: "தயாரிப்பு ஐடியை உள்ளிடவும்",
+    ph_product_name: "தயாரிப்பு பெயர்",
+    ph_stage: "நிலை",
+    ph_location: "இடம்",
+    ph_document_url: "ஆவண இணைப்பு",
+    ph_optional_note: "விருப்ப குறிப்பு",
+    ph_inspector_note: "ஆய்வாளர் குறிப்பு",
+
+    alert_missing_fields: "தகவல் முழுமையடையவில்லை",
+    alert_product_added: "தயாரிப்பு சேர்க்கப்பட்டது",
+    alert_update_submitted: "புதுப்பிப்பு சமர்ப்பிக்கப்பட்டது",
+    alert_invalid_inspector: "தவறான ஆய்வாளர் குறியீடு",
+    alert_product_not_found: "தயாரிப்பு கிடைக்கவில்லை",
+    prompt_inspector_code: "ஆய்வாளர் குறியீட்டை உள்ளிடவும்:",
+    prompt_product_id: "தயாரிப்பு ஐடியை உள்ளிடவும்:",
+    
+    open_document: "ஆவணத்தை திறக்கவும்",
+    verified_badge: "சரிபார்க்கப்பட்டது",
+    reviewed: "மதிப்பாய்வு செய்யப்பட்டது"
+  },
+
+  te: {
+    title: "అగ్రిచైన్",
+    subtitle: "మీ ఆహారాన్ని పొలం నుండి ఫోర్క్ వరకు ట్రాక్ చేయండి.",
+    trace_product: "ఉత్పత్తిని ట్రాక్ చేయండి",
+    trace_btn: "ట్రాక్ చేయండి",
+    timeline_title: "ఉత్పత్తి కాలక్రమం",
+    timeline_empty: "ఉత్పత్తి IDని నమోదు చేయండి.",
+    partner_title: "సరఫరా గొలుసు భాగస్వామి?",
+    access_dashboard: "డాష్‌బోర్డ్ తెరవండి",
+    select_role: "పాత్రను ఎంచుకోండి",
+    choose_role: "పాత్రను ఎంచుకోండి",
+    role_farmer: "రైతు",
+    role_logistics: "లాజిస్టిక్స్",
+    role_retailer: "రిటైలర్",
+    role_inspector: "ఇన్స్పెక్టర్",
+    add_product: "కొత్త ఉత్పత్తిని జోడించండి",
+    add_product_btn: "ఉత్పత్తిని జోడించండి",
+    update_status: "ఉత్పత్తి స్థితిని అప్‌డేట్ చేయండి",
+    submit_update: "అప్‌డేట్ సమర్పించండి",
+    inspector_review: "ఇన్స్పెక్టర్ సమీక్ష",
+    verify_btn: "ధృవీకరించండి",
+    footer_text: "అగ్రిచైన్ · హ్యాకథాన్ ప్రోటోటైప్",
+
+    ph_product_id: "ఉత్పత్తి IDని నమోదు చేయండి",
+    ph_product_name: "ఉత్పత్తి పేరు",
+    ph_stage: "దశ",
+    ph_location: "స్థానం",
+    ph_document_url: "పత్రం లింక్",
+    ph_optional_note: "ఐచ్ఛిక గమనిక",
+    ph_inspector_note: "ఇన్స్పెక్టర్ గమనిక",
+
+    alert_missing_fields: "సమాచారం అసంపూర్ణంగా ఉంది",
+    alert_product_added: "ఉత్పత్తి జోడించబడింది",
+    alert_update_submitted: "అప్‌డేట్ సమర్పించబడింది",
+    alert_invalid_inspector: "చెల్లని ఇన్స్పెక్టర్ కోడ్",
+    alert_product_not_found: "ఉత్పత్తి కనుగొనబడలేదు",
+    prompt_inspector_code: "ఇన్స్పెక్టర్ కోడ్ నమోదు చేయండి:",
+    prompt_product_id: "ఉత్పత్తి IDని నమోదు చేయండి:",
+    
+    open_document: "పత్రాన్ని తెరవండి",
+    verified_badge: "ధృవీకరించబడింది",
+    reviewed: "సమీక్షించబడింది"
+  }
 };
 
-// Trace Product Functionality
-const timeline = document.getElementById("timeline");
-const traceBtn = document.getElementById("traceBtn");
+window.setLanguage = function(lang){
+  currentLang = lang;
 
-traceBtn.addEventListener('click', function() {
-  const productId = document.getElementById('pid').value.trim().toUpperCase();
-  
-  if (!productId) {
-    alert('Please enter a Product ID');
-    return;
-  }
-  
-  // Show loading state
-  timeline.innerHTML = '<p class="timeline-placeholder">🔍 Searching blockchain...</p>';
-  
-  // Simulate blockchain query delay
-  setTimeout(function() {
-    const events = blockchainData[productId];
-    
-    if (events && events.length > 0) {
-      timeline.innerHTML = '';
-      
-      events.forEach(function(event, index) {
-        const step = document.createElement("div");
-        step.className = "step active";
-        
-        const date = new Date(event.timestamp);
-        const formattedDate = date.toLocaleDateString('en-US', { 
-          month: 'short', 
-          day: 'numeric', 
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        });
-        
-        step.innerHTML = `
-          <h4>${event.type}</h4>
-          <p>${event.description}</p>
-          <small>✓ Verified on Block #${event.blockNumber.toLocaleString()}</small>
-          <br>
-          <small style="color: #888; font-size: 11px;">
-            ${formattedDate} | TX: ${event.txHash}
-          </small>
-        `;
-        timeline.appendChild(step);
-      });
-    } else {
-      timeline.innerHTML = `
-        <p class="timeline-placeholder" style="color: #e57373;">
-          ❌ Product not found on blockchain<br><br>
-          <span style="font-size: 12px; color: #666;">
-            Try one of these demo IDs:<br>
-            • AGRI-2026-TN-01 (Organic Tomatoes)<br>
-            • AGRI-2026-KA-02 (Coffee Beans)<br>
-            • AGRI-2026-MH-03 (Organic Rice)
-          </span>
-        </p>
-      `;
-    }
-  }, 800);
-});
-
-// Enter key support
-document.getElementById('pid').addEventListener('keypress', function(e) {
-  if (e.key === 'Enter') {
-    traceBtn.click();
-  }
-});
-
-// Wallet Connection Functionality
-document.getElementById("walletBtn").addEventListener('click', function() {
-  const role = document.getElementById("role").value;
-  
-  if (role === "consumer") {
-    alert("✅ Consumers can verify products without a blockchain wallet!\n\nJust enter a Product ID to see the complete supply chain history.");
-  } else {
-    alert("🔗 Wallet Connection Demo\n\nIn production, this would connect to MetaMask or other Web3 wallets for " + role + " authentication.\n\nFor this demo, wallet connection is simulated.");
-  }
-});
-
-// Smooth Scroll for Navigation Links
-document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
-  anchor.addEventListener('click', function(e) {
-    e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      target.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
+  // Update all text elements
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const key = el.dataset.i18n;
+    if(translations[lang][key]) el.innerText = translations[lang][key];
   });
-});
 
-// Console easter egg
-console.log('%c🌱 AgriChain Blockchain Explorer', 'color: #2e7d32; font-size: 20px; font-weight: bold;');
-console.log('%cDemo Product IDs:', 'color: #666; font-size: 14px;');
-console.log('• AGRI-2026-TN-01 (Organic Tomatoes from Tamil Nadu)');
-console.log('• AGRI-2026-KA-02 (Premium Coffee from Karnataka)');
-console.log('• AGRI-2026-MH-03 (Organic Rice from Maharashtra)');
+  // Update all placeholders
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el=>{
+    const key = el.dataset.i18nPlaceholder;
+    if(translations[lang][key]) el.placeholder = translations[lang][key];
+  });
+
+  // Update language button states
+  document.querySelectorAll(".lang-btn").forEach(btn=>{
+    btn.classList.remove("active");
+  });
+  const activeLangBtn = document.getElementById('lang' + lang.charAt(0).toUpperCase() + lang.slice(1));
+  if(activeLangBtn) activeLangBtn.classList.add('active');
+
+  // Re-render dynamic content if visible
+  if(!inspectorUI.classList.contains("hidden") && window.currentInspectorPid){
+    loadInspector(window.currentInspectorPid);
+  }
+};
+
+/* 🔴 CONFIG */
+const firebaseConfig = {
+  apiKey: "AIzaSyBtRjzivHUkO5BvUbFRG04QBTwm4bh1o7c",
+  authDomain: "agrichain-384a7.firebaseapp.com",
+  projectId: "agrichain-384a7",
+  storageBucket: "agrichain-384a7.appspot.com",
+  messagingSenderId: "926380670842",
+  appId: "1:926380670842:web:f7aca830c544922957a0c3"
+};
+
+const GLOBAL_INSPECTOR_CODE = "123456789";
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+await signInAnonymously(getAuth(app));
+
+const roleCard = document.getElementById("roleCard");
+const roleSelect = document.getElementById("roleSelect");
+const farmerUI = document.getElementById("farmerUI");
+const updateUI = document.getElementById("updateUI");
+const inspectorUI = document.getElementById("inspectorUI");
+const inspectList = document.getElementById("inspectList");
+const timeline = document.getElementById("timeline");
+
+// Input element references
+const tracePid = document.getElementById("tracePid");
+const newPid = document.getElementById("newPid");
+const productName = document.getElementById("productName");
+const updPid = document.getElementById("updPid");
+const stage = document.getElementById("stage");
+const locationInput = document.getElementById("location");
+const docUrl = document.getElementById("docUrl");
+const roleNote = document.getElementById("roleNote");
+
+window.openDashboard = () => roleCard.classList.remove("hidden");
+
+window.renderRoleUI = async () => {
+  farmerUI.classList.add("hidden");
+  updateUI.classList.add("hidden");
+  inspectorUI.classList.add("hidden");
+
+  const role = roleSelect.value;
+
+  if (role === "farmer") farmerUI.classList.remove("hidden");
+  if (role === "logistics" || role === "retailer") updateUI.classList.remove("hidden");
+
+  if (role === "inspector") {
+    const code = prompt(translations[currentLang].prompt_inspector_code);
+    if (code !== GLOBAL_INSPECTOR_CODE) {
+      alert(translations[currentLang].alert_invalid_inspector);
+      return resetRole();
+    }
+
+    const pid = prompt(translations[currentLang].prompt_product_id);
+    if (!pid) return resetRole();
+
+    const snap = await getDoc(doc(db,"trades",pid));
+    if (!snap.exists()) {
+      alert(translations[currentLang].alert_product_not_found);
+      return resetRole();
+    }
+
+    inspectorUI.classList.remove("hidden");
+    window.currentInspectorPid = pid;
+    loadInspector(pid);
+  }
+};
+
+function resetRole(){ roleSelect.value=""; }
+
+/* FARMER */
+window.addProduct = async () => {
+  const pid=newPid.value.trim(), name=productName.value.trim();
+  if(!pid||!name) return alert(translations[currentLang].alert_missing_fields);
+
+  await setDoc(doc(db,"trades",pid),{
+    productName:name,
+    createdAt:serverTimestamp()
+  });
+  alert(translations[currentLang].alert_product_added);
+};
+
+/* ROLE UPDATE */
+window.addUpdate = async () => {
+  const pid=updPid.value.trim();
+  const stg=stage.value.trim();
+  if(!pid||!stg) return alert(translations[currentLang].alert_missing_fields);
+
+  await addDoc(collection(db,"trades",pid,"events"),{
+    stage:stg,
+    location:locationInput.value||"—",
+    role:roleSelect.value,
+    document:docUrl.value||"",
+    roleNote:roleNote.value||"",
+    verified:false,
+    inspectorNote:"",
+    timestamp:serverTimestamp()
+  });
+  alert(translations[currentLang].alert_update_submitted);
+};
+
+/* INSPECTOR */
+async function loadInspector(pid){
+  inspectList.innerHTML="";
+  const q=query(collection(db,"trades",pid,"events"),orderBy("timestamp"));
+  const snap=await getDocs(q);
+
+  snap.forEach(d=>{
+    const e=d.data();
+    inspectList.innerHTML+=`
+      <div class="event">
+        <strong>${e.stage}</strong> (${e.role})<br/>
+        ${e.document?`<a href="${e.document}" target="_blank" style="color: var(--accent-dark); text-decoration: underline;">${translations[currentLang].open_document}</a>`:""}
+        <input id="note-${d.id}" placeholder="${translations[currentLang].ph_inspector_note}"/>
+        <button onclick="verifyStep('${pid}','${d.id}')">${translations[currentLang].verify_btn}</button>
+      </div>`;
+  });
+}
+
+window.verifyStep = async (pid,eid)=>{
+  const note=document.getElementById(`note-${eid}`).value||translations[currentLang].reviewed;
+  await updateDoc(doc(db,"trades",pid,"events",eid),{
+    verified:true,
+    inspectorNote:note
+  });
+  loadInspector(pid);
+};
+
+/* PUBLIC TRACE */
+window.traceProduct = async ()=>{
+  const pid=tracePid.value.trim();
+  timeline.innerHTML="";
+  const q=query(collection(db,"trades",pid,"events"),orderBy("timestamp"));
+  const snap=await getDocs(q);
+
+  snap.forEach(d=>{
+    const e=d.data();
+    timeline.innerHTML+=`
+      <div class="event">
+        <h4>${e.stage}</h4>
+        <p>${e.location}</p>
+        ${e.verified?`<span class="badge">${translations[currentLang].verified_badge}</span><p style="margin-top: 8px; font-style: italic;">${e.inspectorNote}</p>`:""}
+        <span class="badge">${e.role}</span>
+      </div>`;
+  });
+};
+
+// Attach language switcher listeners (after all elements are defined)
+document.getElementById('langEn').addEventListener('click', () => setLanguage('en'));
+document.getElementById('langHi').addEventListener('click', () => setLanguage('hi'));
+document.getElementById('langBn').addEventListener('click', () => setLanguage('bn'));
+document.getElementById('langTa').addEventListener('click', () => setLanguage('ta'));
+document.getElementById('langTe').addEventListener('click', () => setLanguage('te'));
 </script>
-
 </body>
 </html>
