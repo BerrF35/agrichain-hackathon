@@ -36,6 +36,82 @@ body {
   color: var(--text-dark);
   line-height: 1.6;
   overflow-x: hidden;
+  padding-top: 60px; /* Space for fixed help banner */
+}
+
+/* Help Banner */
+.help-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+  color: var(--white);
+  padding: 12px 20px;
+  text-align: center;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(231, 111, 81, 0.25);
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.help-banner-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.help-banner-icon {
+  font-size: 18px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.help-banner-btn {
+  background: var(--white);
+  color: var(--accent-dark);
+  padding: 6px 16px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 2px solid transparent;
+}
+
+.help-banner-btn:hover {
+  background: var(--accent-dark);
+  color: var(--white);
+  border-color: var(--white);
+  transform: scale(1.05);
+}
+
+.help-banner-phone {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 90px; /* More space for wrapped banner on mobile */
+  }
+  
+  .help-banner {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+  
+  .help-banner-btn {
+    font-size: 12px;
+    padding: 5px 14px;
+  }
 }
 
 body::before {
@@ -499,6 +575,20 @@ footer::before {
 <body>
 <div class="grain-overlay"></div>
 
+<!-- Help Banner -->
+<div class="help-banner">
+  <span class="help-banner-text">
+    <span class="help-banner-icon">📞</span>
+    <span data-i18n="help_banner_text">Need help? Call an instructor or helper to assist you!</span>
+  </span>
+  <a href="tel:+911234567890" class="help-banner-btn">
+    📱 <span data-i18n="help_call">Call:</span> <span class="help-banner-phone">+91 12345 67890</span>
+  </a>
+  <a href="https://docs.google.com/forms/d/1kfuMWa5k73rrJzFV5K7-qGUpc6ForWaPbXjz6kTgTJg/edit" target="_blank" class="help-banner-btn">
+    📝 <span data-i18n="help_request">Request Training</span>
+  </a>
+</div>
+
 <div class="container">
 
 <!-- Hero Section -->
@@ -591,6 +681,9 @@ const translations = {
   en: {
     title: "AgriChain",
     subtitle: "Trace your food from farm to fork.",
+    help_banner_text: "Need help? Call an instructor or helper to assist you!",
+    help_call: "Call:",
+    help_request: "Request Training",
     trace_product: "Trace Product",
     trace_btn: "Trace",
     timeline_title: "Product Timeline",
@@ -635,6 +728,9 @@ const translations = {
   hi: {
     title: "एग्रीचेन",
     subtitle: "अपने भोजन को खेत से थाली तक ट्रैक करें।",
+    help_banner_text: "मदद चाहिए? प्रशिक्षक या सहायक को कॉल करें!",
+    help_call: "कॉल करें:",
+    help_request: "प्रशिक्षण के लिए अनुरोध",
     trace_product: "उत्पाद ट्रैक करें",
     trace_btn: "ट्रैक करें",
     timeline_title: "उत्पाद समयरेखा",
@@ -679,6 +775,9 @@ const translations = {
   bn: {
     title: "এগ্রিচেইন",
     subtitle: "খামার থেকে খাবার পর্যন্ত আপনার খাদ্য ট্র্যাক করুন।",
+    help_banner_text: "সাহায্য প্রয়োজন? প্রশিক্ষক বা সহায়ককে কল করুন!",
+    help_call: "কল করুন:",
+    help_request: "প্রশিক্ষণের জন্য অনুরোধ",
     trace_product: "পণ্য ট্র্যাক করুন",
     trace_btn: "ট্র্যাক করুন",
     timeline_title: "পণ্য টাইমলাইন",
@@ -723,6 +822,9 @@ const translations = {
   ta: {
     title: "அக்ரிசெயின்",
     subtitle: "உங்கள் உணவை பண்ணையிலிருந்து முட்கரண்டி வரை கண்காணிக்கவும்.",
+    help_banner_text: "உதவி தேவையா? பயிற்சியாளர் அல்லது உதவியாளரை அழைக்கவும்!",
+    help_call: "அழைக்கவும்:",
+    help_request: "பயிற்சிக்கு கோரிக்கை",
     trace_product: "தயாரிப்பு கண்காணிப்பு",
     trace_btn: "கண்காணிக்கவும்",
     timeline_title: "தயாரிப்பு காலவரிசை",
@@ -767,6 +869,9 @@ const translations = {
   te: {
     title: "అగ్రిచైన్",
     subtitle: "మీ ఆహారాన్ని పొలం నుండి ఫోర్క్ వరకు ట్రాక్ చేయండి.",
+    help_banner_text: "సహాయం కావాలా? శిక్షకుడు లేదా సహాయకుడికి కాల్ చేయండి!",
+    help_call: "కాల్ చేయండి:",
+    help_request: "శిక్షణ కోసం అభ్యర్థన",
     trace_product: "ఉత్పత్తిని ట్రాక్ చేయండి",
     trace_btn: "ట్రాక్ చేయండి",
     timeline_title: "ఉత్పత్తి కాలక్రమం",
